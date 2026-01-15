@@ -121,4 +121,236 @@
             <div class="history-container">
                 <div class="history-header">
                     <span class="history-title">📈 EP13 練習紀錄 (最近 5 次)</span>
-                    <button class
+                    <button class="clear-btn" onclick="confirmClear()">清除紀錄</button>
+                </div>
+                <div id="history-list"></div>
+            </div>
+
+            <div class="review-container" id="review-list"></div>
+            
+            <div><span class="retry-link" onclick="initQuiz()">↺ 再練一次這組單字</span></div>
+
+            <a href="https://docs.google.com/forms/YOUR_LINK" class="cta-button" target="_blank">👉 前往：【EP13】實戰驗收</a>
+
+            <div class="footer-upsell">
+                💡 覺得這套模式有效？完整 16 集多益衝刺計畫已在蝦皮上架。<br>
+                <a href="https://shopee.tw/YOUR_LINK" class="shopee-link" target="_blank">點此前往蝦皮賣場看更多</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// EP13 單字資料庫 (No.301 - 325)
+const rawData = [
+    // 301. deposit
+    { type: "單字辨析", word: "deposit", show: "訂金、押金", ans: true, feedback: "deposit 是「訂金、押金」。" },
+    { type: "句型搭配", word: "deposit", show: "a security ______ / 填入：deposit", ans: true, feedback: "應填入 deposit (押金)。" },
+
+    // 302. contain
+    { type: "單字辨析", word: "contain", show: "包含", ans: true, feedback: "contain 是「包含」。" },
+    { type: "句型搭配", word: "contain", show: "The report ______s useful information. / 填入：content", ans: false, feedback: "應填入 contains (這份報告包含有用的資訊)。" },
+
+    // 303. content
+    { type: "單字辨析", word: "content", show: "內容", ans: true, feedback: "content 是「內容」。" },
+    { type: "句型搭配", word: "content", show: "the ______s of the document / 填入：content", ans: true, feedback: "應填入 contents (文件內容)。" },
+
+    // 304. proof
+    { type: "單字辨析", word: "proof", show: "證據,證明", ans: true, feedback: "proof 是「證據,證明」。" },
+    { type: "句型搭配", word: "proof", show: "______ of payment / 填入：proof", ans: true, feedback: "應填入 proof (付款證明)。" },
+
+    // 305. affect
+    { type: "單字辨析", word: "affect", show: "影響", ans: true, feedback: "affect 是「影響」。" },
+    { type: "句型搭配", word: "affect", show: "______ the price / 填入：affect", ans: true, feedback: "應填入 affect (影響價格)。" },
+
+    // 306. recognize
+    { type: "單字辨析", word: "recognize", show: "認可、表揚", ans: true, feedback: "recognize 是「認可、表揚」。" },
+    { type: "句型搭配", word: "recognize", show: "Our brand is ______d for innovation. / 填入：recognize", ans: true, feedback: "應填入 recognized (我們的品牌以創新著稱)。" },
+
+    // 307. represent
+    { type: "單字辨析", word: "represent", show: "代表", ans: true, feedback: "represent 是「代表」。" },
+    { type: "句型搭配", word: "represent", show: "______ the company at the trade show / 填入：economic", ans: false, feedback: "應填入 represent (代表公司出席貿易展)。" },
+
+    // 308. transfer
+    { type: "單字辨析", word: "transfer", show: "調職、轉調", ans: true, feedback: "transfer 是「調職、轉調」。" },
+    { type: "句型搭配", word: "transfer", show: "He was ______red to the Tokyo branch. / 填入：transfer", ans: true, feedback: "應填入 transferred (他被調職到東京分部)。" },
+
+    // 309. anniversary
+    { type: "單字辨析", word: "anniversary", show: "週年紀念", ans: true, feedback: "anniversary 是「週年紀念」。" },
+    { type: "句型搭配", word: "anniversary", show: "celebrate the tenth ______ / 填入：anniversary", ans: true, feedback: "應填入 anniversary (慶祝十週年紀念)。" },
+
+    // 310. automatically
+    { type: "單字辨析", word: "automatically", show: "自動地", ans: true, feedback: "automatically 是「自動地」。" },
+    { type: "句型搭配", word: "automatically", show: "The system ______ updates every night. / 填入：automatically", ans: true, feedback: "應填入 automatically (系統每晚自動更新)。" },
+
+    // 311. capacity
+    { type: "單字辨析", word: "capacity", show: "容量;生產力", ans: true, feedback: "capacity 是「容量;生產力」。" },
+    { type: "句型搭配", word: "capacity", show: "increase production ______ / 填入：crowded", ans: false, feedback: "應填入 capacity (提升生產力)。" },
+
+    // 312. destination
+    { type: "單字辨析", word: "destination", show: "目的地", ans: true, feedback: "destination 是「目的地」。" },
+    { type: "句型搭配", word: "destination", show: "popular travel ______s / 填入：destination", ans: true, feedback: "應填入 destinations (熱門旅遊目的地)。" },
+
+    // 313. grant
+    { type: "單字辨析", word: "grant", show: "補助金、助學金", ans: true, feedback: "grant 是「補助金」。" },
+    { type: "句型搭配", word: "grant", show: "obtain a ______ / 填入：grant", ans: true, feedback: "應填入 grant (獲得補助金)。" },
+
+    // 314. publish
+    { type: "單字辨析", word: "publish", show: "出版", ans: true, feedback: "publish 是「出版」。" },
+    { type: "句型搭配", word: "publish", show: "______ a newsletter / 填入：aware", ans: false, feedback: "應填入 publish (發行電子報)。" },
+
+    // 315. accompany
+    { type: "單字辨析", word: "accompany", show: "附有; 附上", ans: true, feedback: "accompany 是「附有; 附上」。" },
+    { type: "句型搭配", word: "accompany", show: "The order is ______ied by free samples. / 填入：accompany", ans: true, feedback: "應填入 accompanied (這筆訂單附有免費樣品)。" },
+
+    // 316. economic
+    { type: "單字辨析", word: "economic", show: "經濟(上)的", ans: true, feedback: "economic 是「經濟(上)的」。" },
+    { type: "句型搭配", word: "economic", show: "______ growth / 填入：economic", ans: true, feedback: "應填入 economic (經濟成長)。" },
+
+    // 317. extremely
+    { type: "單字辨析", word: "extremely", show: "極其、非常", ans: true, feedback: "extremely 是「極其、非常」。" },
+    { type: "句型搭配", word: "extremely", show: "check details ______ carefully / 填入：praise", ans: false, feedback: "應填入 extremely (極其仔細地檢查細節)。" },
+
+    // 318. institution
+    { type: "單字辨析", word: "institution", show: "團體、機構", ans: true, feedback: "institution 是「團體、機構」。" },
+    { type: "句型搭配", word: "institution", show: "a financial ______ / 填入：institution", ans: true, feedback: "應填入 institution (金融機構)。" },
+
+    // 319. accurate
+    { type: "單字辨析", word: "accurate", show: "正確的、準確的", ans: true, feedback: "accurate 是「正確的、準確的」。" },
+    { type: "句型搭配", word: "accurate", show: "______ sales figures / 填入：accurate", ans: true, feedback: "應填入 accurate (正確的營業額)。" },
+
+    // 320. compete
+    { type: "單字辨析", word: "compete", show: "競爭", ans: true, feedback: "compete 是「競爭」。" },
+    { type: "句型搭配", word: "compete", show: "______ with other suppliers / 填入：compete", ans: true, feedback: "應填入 compete (與其他供應商競爭)。" },
+
+    // 321. emphasize
+    { type: "單字辨析", word: "emphasize", show: "強調", ans: true, feedback: "emphasize 是「強調」。" },
+    { type: "句型搭配", word: "emphasize", show: "______ important points / 填入：extremely", ans: false, feedback: "應填入 emphasize (強調重點)。" },
+
+    // 322. aware
+    { type: "單字辨析", word: "aware", show: "察覺的、知道的", ans: true, feedback: "aware 是「察覺的、知道的」。" },
+    { type: "句型搭配", word: "aware", show: "I was ______ of the problem. / 填入：aware", ans: true, feedback: "應填入 aware (我察覺到了這個問題)。" },
+
+    // 323. crowded
+    { type: "單字辨析", word: "crowded", show: "擠滿人的", ans: true, feedback: "crowded 是「擠滿人的」。" },
+    { type: "句型搭配", word: "crowded", show: "The station is always ______ with people. / 填入：crowded", ans: true, feedback: "應填入 crowded (車站總是人滿為患)。" },
+
+    // 324. praise
+    { type: "單字辨析", word: "praise", show: "稱讚", ans: true, feedback: "praise 是「稱讚」。" },
+    { type: "句型搭配", word: "praise", show: "The team is ______d by the CEO. / 填入：institution", ans: false, feedback: "應填入 praised (團隊得到執行長的讚許)。" },
+
+    // 325. valuable
+    { type: "單字辨析", word: "valuable", show: "有用的，有價值的", ans: true, feedback: "valuable 是「有用的，有價值的」。" },
+    { type: "句型搭配", word: "valuable", show: "a ______ addition to the team / 填入：valuable", ans: true, feedback: "應填入 valuable (有價值的新成員)。" }
+];
+
+let questions = [];
+let currentIndex = 0;
+let score = 0;
+let userHistoryList = []; 
+
+function initQuiz() {
+    const shuffled = [...rawData].sort(() => 0.5 - Math.random());
+    questions = shuffled.slice(0, 5);
+    currentIndex = 0; score = 0; userHistoryList = [];
+    document.getElementById('main-banner').classList.remove('compact');
+    document.getElementById('intro-area').style.display = 'block';
+    document.getElementById('quiz-section').style.display = 'block';
+    document.getElementById('result-section').style.display = 'none';
+    document.getElementById('score-count').innerText = "得分: 0";
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const q = questions[currentIndex];
+    document.getElementById('q-count').innerText = `題目 ${currentIndex + 1} / 5`;
+    document.getElementById('progress').style.width = `${((currentIndex + 1) / 5) * 100}%`;
+    document.getElementById('type-tag').innerText = q.type;
+    const wordEl = document.getElementById('word');
+    if (q.type === "句型搭配") {
+        wordEl.style.display = 'none';
+        document.getElementById('content').innerText = q.show;
+    } else {
+        wordEl.style.display = 'block';
+        wordEl.innerText = q.word;
+        document.getElementById('content').innerText = `中文意思：${q.show}`;
+    }
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    document.querySelectorAll('.btn-group button').forEach(b => b.disabled = false);
+}
+
+function handleAnswer(userAns) {
+    const q = questions[currentIndex];
+    const feedback = document.getElementById('feedback');
+    document.querySelectorAll('.btn-group button').forEach(b => b.disabled = true);
+    feedback.style.display = 'block';
+    const isCorrect = (userAns === q.ans);
+    userHistoryList.push({ word: q.word, isCorrect: isCorrect, feedback: q.feedback });
+    if (isCorrect) {
+        score += 20;
+        feedback.innerText = "✅ " + q.feedback;
+        feedback.className = "feedback correct-bg";
+    } else {
+        feedback.innerText = "❌ " + q.feedback;
+        feedback.className = "feedback wrong-bg";
+    }
+    document.getElementById('score-count').innerText = `得分: ${Math.round(score)}`;
+    document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < 5) loadQuestion(); else showResult();
+}
+
+function showResult() {
+    document.getElementById('main-banner').classList.add('compact');
+    document.getElementById('intro-area').style.display = 'none';
+    document.getElementById('quiz-section').style.display = 'none';
+    document.getElementById('result-section').style.display = 'block';
+    document.getElementById('final-score').innerText = Math.round(score) + " / 100";
+    
+    const now = new Date();
+    const timeStr = `${now.getMonth() + 1}/${now.getDate()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+    // 使用 toeic_history_ep13 (注意：EP13 專用鍵值)
+    let history = JSON.parse(localStorage.getItem('toeic_history_ep13')) || [];
+    history.unshift({ score: score, time: timeStr });
+    if(history.length > 5) history.pop();
+    localStorage.setItem('toeic_history_ep13', JSON.stringify(history));
+    renderHistoryList(history);
+
+    document.getElementById('review-list').innerHTML = userHistoryList.map(item => `
+        <div class="review-item">
+            <span class="review-icon">${item.isCorrect ? '✅' : '❌'}</span>
+            <div><b>${item.word || ''}</b> ${item.feedback}</div>
+        </div>
+    `).join('');
+}
+
+function renderHistoryList(history) {
+    const listEl = document.getElementById('history-list');
+    if (!history || history.length === 0) {
+        listEl.innerHTML = '<div style="font-size:0.8rem; color:#999; padding: 5px 0;">尚無紀錄</div>';
+        return;
+    }
+    listEl.innerHTML = history.map(item => `
+        <div class="history-item">
+            <span>時間：${item.time}</span>
+            <b style="color:var(--blue)">${Math.round(item.score)} 分</b>
+        </div>
+    `).join('');
+}
+
+function confirmClear() {
+    if (confirm("確定要清除所有練習紀錄嗎？")) {
+        localStorage.removeItem('toeic_history_ep13');
+        renderHistoryList([]);
+    }
+}
+
+initQuiz();
+</script>
+</body>
+</html>
