@@ -128,69 +128,118 @@
             
             <div><span class="retry-link" onclick="initQuiz()">↺ 再練一次這組單字</span></div>
 
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNkem-vuwWTDc5eEfhv4FlqpubNv7dsoY0uFQEcv4c5rCtyg/viewform?usp=header" class="cta-button" target="_blank">前往👉實戰驗收：📝多益模擬題型</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNkem-vuwWTDc5eEfhv4FlqpubNv7dsoY0uFQEcv4c5rCtyg/viewform?usp=header" class="cta-button" target="_blank">前往👉下一關:中階情境演練</a>
 
             <div class="footer-upsell">
-                💡 這套「直覺單字+實戰刷題」模式很有效吧!完整多益衝刺計畫已在蝦皮上架。<br>
-                <a href="https://shopee.tw/YOUR_LINK" class="shopee-link" target="_blank">點此前往蝦皮賣場看更多</a>
+                這套「單字直覺」練習模式很有效吧!完整多益衝刺計畫已上架。<br>
+                <a href="https://shopee.tw/YOUR_LINK" class="shopee-link" target="_blank">點此前往看更多</a>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// EP13 核心資料庫：無首字母提示、移除所有動詞與名詞字尾變化的純挖空版本
+// EP13 核心資料庫 (301 - 325 共 25 字，正誤答案交互設計，誘答取材自本集清單)
 const rawData = [
-    { type: "單字辨析", word: "a security <u><b>deposit</b></u>", show: "押金、訂金", ans: true, feedback: "deposit 是名詞「訂金、押金」。" },
-    { type: "句型搭配", word: "deposit", show: "a security ______ / 填入：deposit", ans: true, feedback: "應填入 deposit。" },
-    { type: "單字辨析", word: "The report <u><b>contains</b></u> useful information.", show: "排斥、洩漏", ans: false, feedback: "contain 是動詞「包含」。" },
-    { type: "句型搭配", word: "contain", show: "The report ______ useful information. / 填入：contain", ans: true, feedback: "應填入 contain (原句搭配主詞為 contains)。" },
-    { type: "單字辨析", word: "the <u><b>contents</b></u> of the document", show: "文件內容", ans: true, feedback: "content 當複數名詞 contents 時指「內容」。" },
-    { type: "句型搭配", word: "content", show: "the ______ of the document / 填入：content", ans: true, feedback: "應填入 content (原句為複數 contents)。" },
-    { type: "單字辨析", word: "<u><b>proof</b></u> of payment", show: "付款證明", ans: true, feedback: "proof 是名詞「證據、證明」。" },
-    { type: "句型搭配", word: "proof", show: "______ of payment / 填入：deposit", ans: false, feedback: "應填入 proof。" },
-    { type: "單字辨析", word: "<u><b>affect</b></u> the price", show: "穩定價格", ans: false, feedback: "affect 是動詞「影響」。" },
-    { type: "句型搭配", word: "affect", show: "______ the price / 填入：affect", ans: true, feedback: "應填入 affect。" },
-    { type: "單字辨析", word: "Our brand is <u><b>recognized</b></u> for innovation.", show: "被認可、著稱", ans: true, feedback: "recognize 意為「認可、表揚」。" },
-    { type: "句型搭配", word: "recognize", show: "Our brand is ______ for innovation. / 填入：recognized", ans: true, feedback: "應填入 recognized。" },
-    { type: "單字辨析", word: "<u><b>represent</b></u> the company at the trade show", show: "收購公司", ans: false, feedback: "represent 是動詞「代表」。" },
-    { type: "句型搭配", word: "represent", show: "______ the company at the trade show / 填入：represent", ans: true, feedback: "應填入 represent。" },
-    { type: "單字辨析", word: "He was <u><b>transferred</b></u> to the Tokyo branch last year.", show: "調職、轉調", ans: true, feedback: "transfer 意為「調職、轉調」。" },
-    { type: "句型搭配", word: "transfer", show: "He was ______ to the Tokyo branch last year. / 填入：affect", ans: false, feedback: "應填入 transferred。" },
-    { type: "單字辨析", word: "celebrate the tenth <u><b>anniversary</b></u> of the hotel", show: "慶祝十週年紀念", ans: true, feedback: "anniversary 是名詞「週年紀念」。" },
-    { type: "句型搭配", word: "anniversary", show: "celebrate the tenth ______ of the hotel / 填入：anniversary", ans: true, feedback: "應填入 anniversary。" },
-    { type: "單字辨析", word: "The system <u><b>automatically</b></u> updates every night.", show: "手動地", ans: false, feedback: "automatically 是副詞「自動地」。" },
-    { type: "句型搭配", word: "automatically", show: "The system ______ updates every night. / 填入：automatically", ans: true, feedback: "應填入 automatically。" },
-    { type: "單字辨析", word: "increase production <u><b>capacity</b></u>", show: "提升生產力/容量", ans: true, feedback: "capacity 是名詞「容量、生產力」。" },
-    { type: "句型搭配", word: "capacity", show: "increase production ______ / 填入：proof", ans: false, feedback: "應填入 capacity。" },
-    { type: "單字辨析", word: "popular travel <u><b>destinations</b></u>", show: "熱門旅遊目的地", ans: true, feedback: "destination 是名詞「目的地」。" },
-    { type: "句型搭配", word: "destination", show: "popular travel ______ / 填入：destination", ans: true, feedback: "應填入 destination (原句為複數 destinations)。" },
-    { type: "單字辨析", word: "obtain a <u><b>grant</b></u>", show: "獲得補助金", ans: true, feedback: "grant 是名詞「補助金、助學金」。" },
-    { type: "句型搭配", word: "grant", show: "obtain a ______ / 填入：grant", ans: true, feedback: "應填入 grant。" },
-    { type: "單字辨析", word: "<u><b>publish</b></u> a newsletter", show: "取消電子報", ans: false, feedback: "publish 是動詞「出版、發行」。" },
-    { type: "句型搭配", word: "publish", show: "______ a newsletter / 填入：publish", ans: true, feedback: "應填入 publish。" },
-    { type: "單字辨析", word: "Each order is <u><b>accompanied</b></u> by free samples.", show: "附有、附上", ans: true, feedback: "accompany 是動詞「附有、附上」。" },
-    { type: "句型搭配", word: "accompany", show: "Each order is ______ by free samples. / 填入：contained", ans: false, feedback: "應填入 accompanied。" },
-    { type: "單字辨析", word: "<u><b>economic</b></u> growth", show: "經濟成長", ans: true, feedback: "economic 是形容詞「經濟(上)的」。" },
-    { type: "句型搭配", word: "economic", show: "______ growth / 填入：economic", ans: true, feedback: "應填入 economic。" },
-    { type: "單字辨析", word: "check details <u><b>extremely</b></u> carefully", show: "稍微、大概地", ans: false, feedback: "extremely 是副詞「極其、非常」。" },
-    { type: "句型搭配", word: "extremely", show: "check details ______ carefully / 填入：extremely", ans: true, feedback: "應填入 extremely。" },
-    { type: "單字辨析", word: "a financial <u><b>institution</b></u>", show: "金融機構", ans: true, feedback: "institution 是名詞「團體、機構」。" },
-    { type: "句型搭配", word: "institution", show: "a financial ______ / 填入：anniversary", ans: false, feedback: "應填入 institution。" },
-    { type: "單字辨析", word: "<u><b>accurate</b></u> sales figures", show: "正確的、準確的營業額", ans: true, feedback: "accurate 是形容詞「正確的、準確的」。" },
-    { type: "句型搭配", word: "accurate", show: "______ sales figures / 填入：accurate", ans: true, feedback: "應填入 accurate。" },
-    { type: "單字辨析", word: "<u><b>compete</b></u> with other suppliers", show: "與其他供應商合作", ans: false, feedback: "compete 是動詞「競爭」。" },
-    { type: "句型搭配", word: "compete", show: "______ with other suppliers / 填入：compete", ans: true, feedback: "應填入 compete。" },
-    { type: "單字辨析", word: "<u><b>emphasize</b></u> important points", show: "強調重點", ans: true, feedback: "emphasize 是動詞「強調」。" },
-    { type: "句型搭配", word: "emphasize", show: "______ important points / 填入：economic", ans: false, feedback: "應填入 emphasize。" },
-    { type: "單字辨析", word: "I was <u><b>aware</b></u> of the problem.", show: "我察覺到/知道問題", ans: true, feedback: "aware 是形容詞「察覺的、知道的」。" },
-    { type: "句型搭配", word: "aware", show: "I was ______ of the problem. / 填入：aware", ans: true, feedback: "應填入 aware。" },
-    { type: "單字辨析", word: "The station is always <u><b>crowded</b></u> with people.", show: "空無一人的", ans: false, feedback: "crowded 是形容詞「擠滿人的」。" },
-    { type: "句型搭配", word: "crowded", show: "The station is always ______ with people. / 填入：crowded", ans: true, feedback: "應填入 crowded。" },
-    { type: "單字辨析", word: "The team is <u><b>praised</b></u> by the CEO.", show: "團隊得到執行長讚許", ans: true, feedback: "praise 是動詞「稱讚、讚許」。" },
-    { type: "句型搭配", word: "praise", show: "The team is ______ by the CEO. / 填入：competed", ans: false, feedback: "應填入 praised。" },
-    { type: "單字辨析", word: "a <u><b>valuable</b></u> addition to the team", show: "有價值的新成員加入", ans: true, feedback: "valuable 是形容詞「有價值的、有用的」。" },
-    { type: "句型搭配", word: "valuable", show: "a ______ addition to the team / 填入：valuable", ans: true, feedback: "應填入 valuable。" }
+    // 301. deposit (辨析: True / 句型: False)
+    { id: "deposit", type: "單字辨析", word: "a security <u><b>deposit</b></u>", show: "訂金、押金", ans: true, feedback: "deposit 是名詞「訂金、押金」。" },
+    { id: "deposit", type: "句型搭配", show: "a security ______ / 填入：anniversary", ans: false, feedback: "應填入 deposit。" },
+
+    // 302. contain (辨析: False / 句型: True)
+    { id: "contain", type: "單字辨析", word: "The report <u><b>contains</b></u> useful information.", show: "代表", ans: false, feedback: "contain 是動詞「包含」。" },
+    { id: "contain", type: "句型搭配", show: "The report ______ useful information. / 填入：contains", ans: true, feedback: "應填入 contain。" },
+
+    // 303. content (辨析: True / 句型: False)
+    { id: "content", type: "單字辨析", word: "the <u><b>contents</b></u> of the document", show: "內容", ans: true, feedback: "content 是名詞「內容」。" },
+    { id: "content", type: "句型搭配", show: "the ______ of the document / 填入：institution", ans: false, feedback: "應填入 content。" },
+
+    // 304. proof (辨析: False / 句型: True)
+    { id: "proof", type: "單字辨析", word: "<u><b>proof</b></u> of payment", show: "容量;生產力", ans: false, feedback: "proof 是名詞「證據,證明」。" },
+    { id: "proof", type: "句型搭配", show: "______ of payment / 填入：proof", ans: true, feedback: "應填入 proof。" },
+
+    // 305. affect (辨析: True / 句型: False)
+    { id: "affect", type: "單字辨析", word: "<u><b>affect</b></u> the price", show: "影響", ans: true, feedback: "affect 是動詞「影響」。" },
+    { id: "affect", type: "句型搭配", show: "______ the price / 填入：aware", ans: false, feedback: "應填入 affect。" },
+
+    // 306. recognize (辨析: False / 句型: True)
+    { id: "recognize", type: "單字辨析", word: "Our brand is <u><b>recognized</b></u> for innovation.", show: "出版", ans: false, feedback: "recognize 是動詞「認可、表揚」。" },
+    { id: "recognize", type: "句型搭配", show: "Our brand is ______ for innovation. / 填入：recognized", ans: true, feedback: "應填入 recognized。" },
+
+    // 307. represent (辨析: True / 句型: False)
+    { id: "represent", type: "單字辨析", word: "<u><b>represent</b></u> the company at the trade show", show: "代表", ans: true, feedback: "represent 是動詞「代表」。" },
+    { id: "represent", type: "句型搭配", show: "______ the company at the trade show / 填入：valuable", ans: false, feedback: "應填入 represent。" },
+
+    // 308. transfer (辨析: False / 句型: True)
+    { id: "transfer", type: "單字辨析", word: "He was <u><b>transferred</b></u> to the Tokyo branch last year.", show: "自動地", ans: false, feedback: "transfer 是動詞「調職、轉調」。" },
+    { id: "transfer", type: "句型搭配", show: "He was ______ to the Tokyo branch last year. / 填入：transferred", ans: true, feedback: "應填入 transferred。" },
+
+    // 309. anniversary (辨析: True / 句型: False)
+    { id: "anniversary", type: "單字辨析", word: "celebrate the tenth <u><b>anniversary</b></u> of the hotel", show: "週年紀念", ans: true, feedback: "anniversary 是名詞「週年紀念」。" },
+    { id: "anniversary", type: "句型搭配", show: "celebrate the tenth ______ of the hotel / 填入：proof", ans: false, feedback: "應填入 anniversary。" },
+
+    // 310. automatically (辨析: False / 句型: True)
+    { id: "automatically", type: "單字辨析", word: "The system <u><b>automatically</b></u> updates every night.", show: "包含", ans: false, feedback: "automatically 是副詞「自動地」。" },
+    { id: "automatically", type: "句型搭配", show: "The system ______ updates every night. / 填入：automatically", ans: true, feedback: "應填入 automatically。" },
+
+    // 311. capacity (辨析: True / 句型: False)
+    { id: "capacity", type: "單字辨析", word: "increase production <u><b>capacity</b></u>", show: "容量;生產力", ans: true, feedback: "capacity 是名詞「容量;生產力」。" },
+    { id: "capacity", type: "句型搭配", show: "increase production ______ / 填入：destination", ans: false, feedback: "應填入 capacity。" },
+
+    // 312. destination (辨析: False / 句型: True)
+    { id: "destination", type: "單字辨析", word: "popular travel <u><b>destinations</b></u>", show: "證據,證明", ans: false, feedback: "destination 是名詞「目的地」。" },
+    { id: "destination", type: "句型搭配", show: "popular travel ______ / 填入：destinations", ans: true, feedback: "應填入 destinations。" },
+
+    // 313. grant (辨析: True / 句型: False)
+    { id: "grant", type: "單字辨析", word: "obtain a <u><b>grant</b></u>", show: "補助金、助學金", ans: true, feedback: "grant 是名詞「補助金、助學金」。" },
+    { id: "grant", type: "句型搭配", show: "obtain a ______ / 填入：crowded", ans: false, feedback: "應填入 grant。" },
+
+    // 314. publish (辨析: False / 句型: True)
+    { id: "publish", type: "單字辨析", word: "<u><b>publish</b></u> a newsletter", show: "影響", ans: false, feedback: "publish 是動詞「出版」。" },
+    { id: "publish", type: "句型搭配", show: "______ a newsletter / 填入：publish", ans: true, feedback: "應填入 publish。" },
+
+    // 315. accompany (辨析: True / 句型: False)
+    { id: "accompany", type: "單字辨析", word: "Each order is <u><b>accompanied</b></u> by free samples.", show: "附有; 附上", ans: true, feedback: "accompany 是動詞「附有; 附上」。" },
+    { id: "accompany", type: "句型搭配", show: "Each order is ______ by free samples. / 填入：recognized", ans: false, feedback: "應填入 accompanied。" },
+
+    // 316. economic (辨析: False / 句型: True)
+    { id: "economic", type: "單字辨析", word: "<u><b>economic</b></u> growth", show: "認可、表揚", ans: false, feedback: "economic 是形容詞「經濟(上)的」。" },
+    { id: "economic", type: "句型搭配", show: "______ growth / 填入：economic", ans: true, feedback: "應填入 economic。" },
+
+    // 317. extremely (辨析: True / 句型: False)
+    { id: "extremely", type: "單字辨析", word: "check details <u><b>extremely</b></u> carefully", show: "極其、非常", ans: true, feedback: "extremely 是副詞「極其、非常」。" },
+    { id: "extremely", type: "句型搭配", show: "check details ______ carefully / 填入：automatically", ans: false, feedback: "應填入 extremely。" },
+
+    // 318. institution (辨析: False / 句型: True)
+    { id: "institution", type: "單字辨析", word: "a financial <u><b>institution</b></u>", show: "週年紀念", ans: false, feedback: "institution 是名詞「團體、機構」。" },
+    { id: "institution", type: "句型搭配", show: "a financial ______ / 填入：institution", ans: true, feedback: "應填入 institution。" },
+
+    // 319. accurate (辨析: True / 句型: False)
+    { id: "accurate", type: "單字辨析", word: "<u><b>accurate</b></u> sales figures", show: "正確的、準確的", ans: true, feedback: "accurate 是形容詞「正確的、準確的」。" },
+    { id: "accurate", type: "句型搭配", show: "______ sales figures / 填入：capacity", ans: false, feedback: "應填入 accurate。" },
+
+    // 320. compete (辨析: False / 句型: True)
+    { id: "compete", type: "單字辨析", word: "<u><b>compete</b></u> with other suppliers", show: "經濟(上)的", ans: false, feedback: "compete 是動詞「競爭」。" },
+    { id: "compete", type: "句型搭配", show: "______ with other suppliers / 填入：compete", ans: true, feedback: "應填入 compete。" },
+
+    // 321. emphasize (辨析: True / 句型: False)
+    { id: "emphasize", type: "單字辨析", word: "<u><b>emphasize</b></u> important points", show: "強調", ans: true, feedback: "emphasize 是動詞「強調」。" },
+    { id: "emphasize", type: "句型搭配", show: "______ important points / 填入：represent", ans: false, feedback: "應填入 emphasize。" },
+
+    // 322. aware (辨析: False / 句型: True)
+    { id: "aware", type: "單字辨析", word: "I was <u><b>aware</b></u> of the problem.", show: "有用的，有價值的", ans: false, feedback: "aware 是形容詞「察覺的、知道的」。" },
+    { id: "aware", type: "句型搭配", show: "I was ______ of the problem. / 填入：aware", ans: true, feedback: "應填入 aware。" },
+
+    // 323. crowded (辨析: True / 句型: False)
+    { id: "crowded", type: "單字辨析", word: "The station is always <u><b>crowded</b></u> with people.", show: "擠滿人的", ans: true, feedback: "crowded 是形容詞「擠滿人的」。" },
+    { id: "crowded", type: "句型搭配", show: "The station is always ______ with people. / 填入：accurate", ans: false, feedback: "應填入 crowded。" },
+
+    // 324. praise (辨析: False / 句型: True)
+    { id: "praise", type: "單字辨析", word: "The team is <u><b>praised</b></u> by the CEO.", show: "察覺的、知道的", ans: false, feedback: "praise 是動詞「稱讚」。" },
+    { id: "praise", type: "句型搭配", show: "The team is ______ by the CEO. / 填入：praised", ans: true, feedback: "應填入 praised。" },
+
+    // 325. valuable (辨析: True / 句型: False)
+    { id: "valuable", type: "單字辨析", word: "a <u><b>valuable</b></u> addition to the team", show: "有用的，有價值的", ans: true, feedback: "valuable 是形容詞「有用的，有價值的」。" },
+    { id: "valuable", type: "句型搭配", show: "a ______ addition to the team / 填入：crowded", ans: false, feedback: "應填入 valuable。" }
 ];
 
 let questions = [];
@@ -199,9 +248,36 @@ let score = 0;
 let userHistoryList = []; 
 
 function initQuiz() {
-    const shuffled = [...rawData].sort(() => 0.5 - Math.random());
-    questions = shuffled.slice(0, 5);
-    currentIndex = 0; score = 0; userHistoryList = [];
+    const groups = {};
+    rawData.forEach(item => {
+        if (!groups[item.id]) groups[item.id] = [];
+        groups[item.id].push(item);
+    });
+
+    const wordIds = Object.keys(groups);
+    const shuffledIds = wordIds.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+    // 強制混合題型：5 題中「單字辨析」與「句型搭配」各半，絕不全同
+    const typesToAssign = ["單字辨析", "單字辨析", "句型搭配", "句型搭配", Math.random() > 0.5 ? "單字辨析" : "句型搭配"];
+    typesToAssign.sort(() => 0.5 - Math.random());
+
+    let selectedQuestions = [];
+    shuffledIds.forEach((id, index) => {
+        const targetType = typesToAssign[index];
+        const questionOfTargetType = groups[id].find(q => q.type === targetType);
+        if (questionOfTargetType) {
+            selectedQuestions.push(questionOfTargetType);
+        } else {
+            const randomPick = groups[id][Math.floor(Math.random() * groups[id].length)];
+            selectedQuestions.push(randomPick);
+        }
+    });
+
+    questions = selectedQuestions.sort(() => 0.5 - Math.random());
+    
+    currentIndex = 0; 
+    score = 0; 
+    userHistoryList = [];
     document.getElementById('main-banner').classList.remove('compact');
     document.getElementById('intro-area').style.display = 'block';
     document.getElementById('quiz-section').style.display = 'block';
@@ -215,15 +291,21 @@ function loadQuestion() {
     document.getElementById('q-count').innerText = `題目 ${currentIndex + 1} / 5`;
     document.getElementById('progress').style.width = `${((currentIndex + 1) / 5) * 100}%`;
     document.getElementById('type-tag').innerText = q.type;
-    const wordEl = document.getElementById('word');
     
+    const wordEl = document.getElementById('word');
+    const contentEl = document.getElementById('content');
+    
+    // 清空並重新渲染，徹底消除 undefined 交叉污染與單字殘留 Bug
+    wordEl.innerHTML = '';
+    contentEl.innerText = '';
+
     if (q.type === "句型搭配") {
-        wordEl.style.display = 'none';
-        document.getElementById('content').innerText = q.show;
+        wordEl.style.display = 'none'; 
+        contentEl.innerText = q.show; 
     } else {
         wordEl.style.display = 'block';
         wordEl.innerHTML = q.word; 
-        document.getElementById('content').innerText = `中文意思：${q.show}`;
+        contentEl.innerText = `核心單字中文意思：${q.show}`;
     }
     
     document.getElementById('feedback').style.display = 'none';
@@ -237,7 +319,13 @@ function handleAnswer(userAns) {
     document.querySelectorAll('.btn-group button').forEach(b => b.disabled = true);
     feedback.style.display = 'block';
     const isCorrect = (userAns === q.ans);
-    userHistoryList.push({ word: q.word, isCorrect: isCorrect, feedback: q.feedback });
+    
+    userHistoryList.push({ 
+        word: q.type === "句型搭配" ? "句型搭配" : q.word, 
+        isCorrect: isCorrect, 
+        feedback: q.feedback 
+    });
+    
     if (isCorrect) {
         score += 20;
         feedback.innerText = "✅ " + q.feedback;
@@ -265,11 +353,11 @@ function showResult() {
     const now = new Date();
     const timeStr = `${now.getMonth() + 1}/${now.getDate()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-    // 使用獨立的 EP13 儲存欄位
-    let history = JSON.parse(localStorage.getItem('toeic_history_ep13_v3')) || [];
+    // 使用 EP13 專屬快取緩存 Key 值
+    let history = JSON.parse(localStorage.getItem('toeic_history_ep13_v1')) || [];
     history.unshift({ score: score, time: timeStr });
     if(history.length > 5) history.pop();
-    localStorage.setItem('toeic_history_ep13_v3', JSON.stringify(history));
+    localStorage.setItem('toeic_history_ep13_v1', JSON.stringify(history));
     renderHistoryList(history);
 
     document.getElementById('review-list').innerHTML = userHistoryList.map(item => `
@@ -296,7 +384,7 @@ function renderHistoryList(history) {
 
 function confirmClear() {
     if (confirm("確定要清除所有練習紀錄嗎？")) {
-        localStorage.removeItem('toeic_history_ep13_v3');
+        localStorage.removeItem('toeic_history_ep13_v1');
         renderHistoryList([]);
     }
 }
